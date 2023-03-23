@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { api } from "~/utils/api";
+import Link from "next/link";
 
 const Home = () => {
   const { data: session, status } = useSession();
@@ -17,20 +18,28 @@ const Home = () => {
           <>
             {" "}
             <p className="mb-4 text-center">Hi {session.user?.name}</p>
-            <button
-              className="mx-auto block rounded-md bg-neutral-800 py-3 px-6 text-center hover:bg-neutral-700"
-              onClick={() => {
-                signOut().catch(console.log);
-              }}
-            >
-              Sign out
-            </button>
+            <div className="flex flex-col gap-4">
+              <button
+                className="mx-auto block rounded-md bg-neutral-800 py-3 px-6 text-center hover:bg-neutral-700"
+                onClick={() => {
+                  signOut().catch(console.log);
+                }}
+              >
+                Sign out
+              </button>
+              <Link
+                className="mx-auto block rounded-md bg-neutral-800 py-3 px-6 text-center hover:bg-neutral-700"
+                href="/dashboard"
+              >
+                Go to dashboard
+              </Link>
+            </div>
             <div className="pt-10">
               <GuestbookForm />
             </div>
           </>
         ) : (
-          <>
+          <div className="flex flex-col gap-4">
             {" "}
             <button
               type="button"
@@ -41,7 +50,16 @@ const Home = () => {
             >
               Sign in with Discord
             </button>
-          </>
+            <button
+              type="button"
+              className="mx-auto block rounded-md bg-neutral-800 py-3 px-6  text-center hover:bg-neutral-700"
+              onClick={() => {
+                signIn("github").catch(console.log);
+              }}
+            >
+              Sign in with Github
+            </button>
+          </div>
         )}
         <div className="pt-10">
           <GuestbookEntries />
